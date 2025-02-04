@@ -1,12 +1,12 @@
 using UnityEngine;
 
-public class RaycastHandler : MonoBehaviour
+public class ClickHandler : MonoBehaviour
 {
     private Camera _camera;
 
     private int _mouseButton = 0;
 
-    private void Start()
+    private void Awake()
     {
         _camera = Camera.main;
     }

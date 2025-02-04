@@ -15,12 +15,12 @@ public class Spawner : MonoBehaviour
 
     private void OnEnable()
     {
-        _cube.Destroyed += HandleCubeDestruction;
+        Cube.AnyCubeDestroyed += HandleCubeDestruction;
     }
 
     private void OnDisable()
     {
-        _cube.Destroyed -= HandleCubeDestruction;
+        Cube.AnyCubeDestroyed -= HandleCubeDestruction;
     }
 
     private void HandleCubeDestruction(Cube destroyedCube)
@@ -43,24 +43,19 @@ public class Spawner : MonoBehaviour
         float maxValue = 101f;
 
         float randomValue = UnityEngine.Random.Range(minValue, maxValue);
-        //cube.HalveChance();
 
         if (randomValue < cube.CurrentChance)
         {
             SpawnCubes(position, scale, cube);
         }
-        else
-        {
-            _explosion?.Explode(position, cube);
-        }
     }
 
     private void SpawnCubes(Vector3 position, Vector3 scale, Cube destroyedCube)
     {
-        int minValue = 2;
-        int maxValue = 6;
+        float minValue = 2f;
+        float maxValue = 6f;
 
-        int randomCount = UnityEngine.Random.Range(minValue, maxValue);
+        float randomCount = UnityEngine.Random.Range(minValue, maxValue);
 
         for (int i = 0; i < randomCount; i++)
         {
