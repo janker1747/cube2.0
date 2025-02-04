@@ -4,14 +4,7 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     [SerializeField] private Cube _prefab;
-    [SerializeField] private Cube _cube;
-    private Exploder _explosion;
     public event Action<Cube> ChangeColorsCube;
-
-    private void Awake()
-    {
-        _explosion = GetComponent<Exploder>();
-    }
 
     private void OnEnable()
     {
