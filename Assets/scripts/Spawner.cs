@@ -4,16 +4,18 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     [SerializeField] private Cube _prefab;
+    [SerializeField] private Cube _cube;
     public event Action<Cube> ChangeColorsCube;
+    public event Action<Cube> NotSpawnCube;
 
     private void OnEnable()
     {
-        Cube.AnyCubeDestroyed += HandleCubeDestruction;
+        _cube.Destroyed += HandleCubeDestruction;
     }
 
     private void OnDisable()
     {
-        Cube.AnyCubeDestroyed -= HandleCubeDestruction;
+        _cube.Destroyed -= HandleCubeDestruction;
     }
 
     private void HandleCubeDestruction(Cube destroyedCube)
@@ -23,7 +25,7 @@ public class Spawner : MonoBehaviour
             return;
         }
 
-        destroyedCube.Destroyed -= HandleCubeDestruction; 
+        destroyedCube.Destroyed -= HandleCubeDestruction;
         Vector3 position = destroyedCube.transform.position;
         Vector3 scale = destroyedCube.transform.localScale;
 
@@ -41,6 +43,10 @@ public class Spawner : MonoBehaviour
         {
             SpawnCubes(position, scale, cube);
         }
+        else
+        {
+            NotSpawnCube?.Invoke(cube);
+        }
     }
 
     private void SpawnCubes(Vector3 position, Vector3 scale, Cube destroyedCube)
@@ -52,7 +58,7 @@ public class Spawner : MonoBehaviour
 
         for (int i = 0; i < randomCount; i++)
         {
-           InstantiateCube(position, scale, destroyedCube);
+            InstantiateCube(position, scale, destroyedCube);
         }
     }
 
@@ -62,9 +68,9 @@ public class Spawner : MonoBehaviour
         Cube cube = Instantiate(_prefab, position + Vector3.up, Quaternion.identity);
         cube.transform.localScale = scale / divider;
 
-        cube.SetChance(destroyedCube.CurrentChance /2 );
-        cube.Destroyed += HandleCubeDestruction; 
+        cube.SetChance(destroyedCube.CurrentChance / 2);
+        cube.Destroyed += HandleCubeDestruction;
 
-        ChangeColorsCube?.Invoke(cube); 
+        ChangeColorsCube?.Invoke(cube);
     }
 }

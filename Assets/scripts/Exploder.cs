@@ -1,19 +1,24 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Exploder : MonoBehaviour
 {
     private float _radius = 500f;
     private float _force = 100f;
+    private Spawner _spawner;
+
+    private void Awake()
+    {
+        _spawner = GetComponent<Spawner>();
+    }
 
     private void OnEnable()
     {
-        Cube.AnyCubeDestroyed += OnCubeDestroyed;
+        _spawner.NotSpawnCube += OnCubeDestroyed;
     }
 
     private void OnDisable()
     {
-        Cube.AnyCubeDestroyed -= OnCubeDestroyed;
+        _spawner.NotSpawnCube -= OnCubeDestroyed;
     }
 
     private void OnCubeDestroyed(Cube cube)
@@ -34,7 +39,7 @@ public class Exploder : MonoBehaviour
             if (collider.TryGetComponent(out Rigidbody rigidbody))
             {
                 Vector3 explosionDirection = (collider.transform.position - explosionPosition).normalized;
-                rigidbody.AddForce(explosionDirection * _force, ForceMode.Impulse);
+                rigidbody.AddForce(explosionDirection * explosionForce, ForceMode.Impulse);
             }
         }
     }

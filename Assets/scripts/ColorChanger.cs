@@ -21,7 +21,7 @@ public class ColorChanger : MonoBehaviour
 
     public void ChangeColor(Cube cube)
     {
-        MeshRenderer renderer = cube._renderer;
+        MeshRenderer renderer = cube.Renderer;
 
         if (renderer != null)
         {
